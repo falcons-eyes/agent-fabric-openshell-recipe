@@ -3,3 +3,7 @@ Copyright 2026 Falcon Eyes Inc.
 
 This product is licensed under the Apache License, Version 2.0 (see LICENSE).
 All companies, people, amounts and events in data-node/db are synthetic.
+
+agent-node/guardrail/policy_json_schema.json is copied from NVIDIA/skills
+(skills/nemotron-policy-generator/assets), Copyright NVIDIA CORPORATION & AFFILIATES,
+licensed under Apache-2.0.
