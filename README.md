@@ -33,6 +33,7 @@
 | 계획에 없는 호출 발생 | 즉시 freeze, 이후 전부 403 | 계획 감시기 |
 | 샌드박스 안에서 토큰 확인 | `openshell:resolve:env:…` | OpenShell provider |
 | 한도 변경 | 승인 대기, 사람이 승인 | 데이터 노드 |
+| NemoClaw의 OpenClaw 에이전트에게 같은 일을 시킴 | 4회 모두 `ledger-read`만 호출. 끝까지 해낸 건 1회 | 같은 게이트웨이·여권 |
 
 장면별 캡처는 [시연 문서](docs/DEMO_WALKTHROUGH.md), 실행 기록은 [검증 기록](docs/VERIFICATION.md)에 있다.
 
@@ -41,6 +42,7 @@
 - **DGX Spark**: 에이전트 노드
 - **Nemotron**: 로컬에서 계획·도구 호출·요약. 프롬프트가 기계 밖으로 안 나간다.
 - **OpenShell**: 샌드박스, 송신 정책, 여권(토큰) 주입
+- **NemoClaw**: OpenClaw 에이전트 샌드박스. preset 하나와 스킬로 같은 게이트웨이에 붙였다([`agent-node/nemoclaw/`](agent-node/nemoclaw/README.md)).
 - **NVIDIA 스킬 `nemotron-policy-generator`**: 핀테크 가드레일 정책을 이걸로 만들었다([`agent-node/guardrail/`](agent-node/guardrail/)). 가드레일 프롬프트는 영어로 둔다. Nemotron 콘텐츠 안전 모델이 영어 프롬프트로 학습됐기 때문이다.
 
 ## 돌려 보기
@@ -57,13 +59,15 @@ ollama pull nemotron-3-nano:30b # 에이전트 노드 (DGX Spark는 NIM·vLLM도
 ./scripts/watch-demo.sh         # 계획 이탈 → 자동 정지
 ```
 
+NemoClaw(OpenClaw)로 돌리는 법은 [`agent-node/nemoclaw/`](agent-node/nemoclaw/README.md)에 있다.
+
 필요한 것은 Docker, [uv](https://docs.astral.sh/uv/), [OpenShell CLI](https://github.com/NVIDIA/OpenShell)다. 원장·freeze·기본 MCP 권한은 v0.1.35보다 새 `fabric` 릴리스에서 동작한다. DGX Spark에서는 게이트웨이를 OpenShell 브리지 주소에 띄운다(`GATEWAY_LISTEN=172.19.0.1:17777`).
 
 ## 폴더
 
 | 경로 | 내용 |
 | --- | --- |
-| `agent-node/` | 에이전트, 샌드박스 이미지·정책, 가드레일, 계획 감시기 |
+| `agent-node/` | 에이전트, 샌드박스 이미지·정책, 가드레일, 계획 감시기, NemoClaw preset |
 | `data-node/` | 원장 MCP 서버(읽기·관리), 합성 데이터와 공격 메모 |
 | `skills/fabric-access/` | 에이전트용 스킬 |
 | `scripts/` | 띄우기·시연·승인 |
@@ -73,6 +77,7 @@ ollama pull nemotron-3-nano:30b # 에이전트 노드 (DGX Spark는 NIM·vLLM도
 
 - 기록된 실행은 Mac 한 대가 두 노드를 겸했다. DGX Spark 실행은 진행 중이다.
 - 가드레일 검증에는 대체 모델(Nemotron 3 Nano)을 썼다.
+- NemoClaw 경로에는 가드레일을 아직 붙이지 않았다. 게이트웨이·OpenShell 차단은 같다.
 - 집계값은 데이터 노드를 떠난다. 원본 행은 안 떠나고, 떠난 바이트는 기록된다.
 - 규제가 요구하는 대체 통제의 일부를 기술로 강제할 뿐, 규제 준수 인증은 아니다.
 - 계획 감시기는 규칙 기반이다. 에이전트의 의도를 읽지는 못한다.

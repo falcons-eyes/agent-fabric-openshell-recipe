@@ -23,6 +23,19 @@ Accept: application/json, text/event-stream
 
 처음에는 받은 서비스에 `tools/list`를 보내 도구 목록부터 확인한다.
 
+셸(exec) 도구가 있으면 이 스킬 폴더의 `fabric_mcp.py`를 쓴다. 따옴표를 직접 맞출 필요가 없다. OpenClaw 작업 폴더에서는 경로가 `skills/fabric-access/fabric_mcp.py`다.
+
+```bash
+python3 fabric_mcp.py ledger-read tools
+python3 fabric_mcp.py ledger-read list_risk_events '{"days": 30}'
+python3 fabric_mcp.py ledger-read counterparty_risk_summary '{"cp_id": "CP-0001"}'
+python3 fabric_mcp.py ledger-read prepare_limit_change '{"cp_id": "CP-0001", "new_limit_bucket": "<10k", "reason": "파산 신청"}'
+```
+
+`tools` 결과의 괄호 안이 인자다. `(선택)`이 없는 인자는 반드시 넣는다.
+
+`FABRIC_CAPABILITY`, `FABRIC_GATEWAY_URL`, `FABRIC_NETWORK`는 **직접 넣지 않는다.** 이미 샌드박스 환경에 있고, 여권 값은 자리표시자라서 지어낸 값으로 바꾸면 401이 난다.
+
 ## 응답이 뜻하는 것
 
 | 응답 | 뜻 | 할 일 |

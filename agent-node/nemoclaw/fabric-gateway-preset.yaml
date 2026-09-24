@@ -1,0 +1,19 @@
+# NemoClaw 사용자 정의 preset: OpenClaw 샌드박스가 호스트의 Agent Fabric 게이트웨이로만
+# 사내 서비스를 부르게 한다. 게이트웨이 경로(/gw/…)에 POST만 허용한다.
+#   nemoclaw fabric-claw policy add --from-file agent-node/nemoclaw/fabric-gateway-preset.yaml --yes
+preset:
+  name: agent-fabric-gateway
+  description: "Agent Fabric gateway on the host: the only road to private services"
+network_policies:
+  agent-fabric-gateway:
+    name: agent-fabric-gateway
+    endpoints:
+      - host: host.openshell.internal
+        port: 17777
+        protocol: rest
+        enforcement: enforce
+        rules:
+          - allow: { method: POST, path: "/gw/**" }
+    binaries:
+      - { path: /usr/bin/curl }
+      - { path: /usr/bin/python3 }

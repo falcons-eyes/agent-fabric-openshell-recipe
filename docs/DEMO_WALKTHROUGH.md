@@ -25,10 +25,13 @@
 | 11 | ![](screenshots/11-guardrail-policy.png) | 가드레일 정책은 NVIDIA 스킬로 만들고 스키마 검증을 통과했다. |
 | 12 | ![](screenshots/12-plan-watch.png) | 계획에 없는 호출이 나오자마자 게이트웨이가 스스로 멈춘다. |
 | 13 | ![](screenshots/13-portfolio-run.png) | "위험 신호 있는 거래처 전부 점검" 한 줄에 에이전트가 목록을 뽑고, 심각한 두 곳만 골라 한도 조정을 준비했다. 중간 등급은 건너뛰었다. |
+| 14 | ![](screenshots/14-nemoclaw-openclaw.png) | NVIDIA NemoClaw의 OpenClaw 에이전트도 같은 스킬·여권으로 일한다. 이번 회차는 한 곳만 준비했고, 답변도 그렇게 말했다. |
+| 15 | ![](screenshots/15-nemoclaw-ledger.png) | 그 실행의 원장. 전부 `ledger-read` 200이다. |
 
 ## 참고할 점
 
 - 5번의 가드레일 모델은 대체 모델(`nemotron-3-nano:30b`)이다. 정식 모델은 build.nvidia.com의 `nemotron-3.5-content-safety`다.
 - 4번의 `sleep 2`는 OpenShell 0.0.116에서 바로 끝나는 명령이 준비 단계에서 오류로 처리돼서 넣었다.
 - 긴 출력은 이미지로 옮길 때만 110자에서 줄을 바꿨다. 원본 `.txt`는 그대로다.
+- 14번 모델은 로컬 Nemotron 3 Nano 30B다. 네 번 중 한 번만 세 단계를 끝까지 했다([검증 기록 7절](VERIFICATION.md)).
 - 장면마다 따로 실행해서 승인 번호가 서로 다를 수 있다.
