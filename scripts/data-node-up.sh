@@ -8,12 +8,13 @@ say "database (synthetic data, postgres:16 on 127.0.0.1:${PG_PORT})"
 docker rm -f afr-pg >/dev/null 2>&1 || true
 docker run -d --name afr-pg -e POSTGRES_PASSWORD=demo -e POSTGRES_DB=fintech \
   -p "127.0.0.1:${PG_PORT}:5432" postgres:16-alpine >/dev/null
-until pg_isready -h 127.0.0.1 -p "$PG_PORT" -q; do sleep 1; done; sleep 2
-psql "$PGURL" -q -v ON_ERROR_STOP=1 -f "$ROOT/data-node/db/schema.sql" -f "$ROOT/data-node/db/seed.sql" \
-  -f "$ROOT/data-node/db/scenario.sql" >/dev/null
-psql "$PGURL" -At -c "select 'customers='||count(*) from fintech.customer"
+until docker exec afr-pg pg_isready -U postgres -q 2>/dev/null; do sleep 1; done; sleep 2
+cat "$ROOT/data-node/db/schema.sql" "$ROOT/data-node/db/seed.sql" "$ROOT/data-node/db/scenario.sql" \
+  | psql_db -q -v ON_ERROR_STOP=1 >/dev/null
+psql_db -At -c "select 'customers='||count(*)||' transactions='||(select count(*) from fintech.transaction) from fintech.customer"
 
 say "MCP services (read: aggregates only / admin: raw export + approval)"
+pkill -f "server.py --role (read|admin)" 2>/dev/null || true
 cd "$ROOT/data-node/ledger_mcp" && uv sync -q
 PGURL="$PGURL" nohup uv run python server.py --role read  --port 8801 >/tmp/afr-read.log  2>&1 &
 PGURL="$PGURL" nohup uv run python server.py --role admin --port 8802 >/tmp/afr-admin.log 2>&1 &

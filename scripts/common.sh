@@ -15,4 +15,6 @@ GATEWAY_LISTEN="${GATEWAY_LISTEN:-127.0.0.1:${GATEWAY_PORT}}"
 MODEL_URL="${MODEL_URL:-http://host.openshell.internal:11434/v1}"
 MODEL="${MODEL:-nemotron-3-nano:30b}"
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# psql inside the database container: the host needs Docker, not a Postgres client.
+psql_db() { docker exec -i afr-pg psql -U postgres -d fintech "$@"; }
 say() { printf '\n\033[1m== %s\033[0m\n' "$*"; }

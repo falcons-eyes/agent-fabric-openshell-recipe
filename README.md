@@ -60,11 +60,18 @@ the injected actions deliberately, with no model in the loop, and they still fai
 
 ## Run it
 
-Requirements: Docker, [`uv`](https://docs.astral.sh/uv/), `psql`, the
+Requirements: Docker, [`uv`](https://docs.astral.sh/uv/), the
 [OpenShell CLI](https://github.com/NVIDIA/OpenShell), and the `fabric` CLI signed in to
 one Agent Fabric network on both machines (`fabric login && fabric up`). One machine
 can play both roles. The gateway ledger, `freeze` and the default MCP grant need a `fabric` release newer
 than v0.1.35.
+
+Install the `fabric` CLI (signed releases, macOS/Linux/Windows) and sign in on both machines:
+
+```bash
+curl -LsSf https://raw.githubusercontent.com/falcons-eyes/agent-fabric-docs/main/install.sh | sh
+fabric login && sudo fabric up
+```
 
 ```bash
 # data node
