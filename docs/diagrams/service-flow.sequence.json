@@ -1,0 +1,258 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Secure Agent Passport — 서비스 흐름",
+    "quality_profile": "showcase",
+    "animation": "trace",
+    "column_fit": "spread",
+    "viewBox": [
+      1080,
+      666
+    ],
+    "views": [
+      {
+        "id": "plan-and-call",
+        "label": "지시와 호출",
+        "focus": [
+          "analyst",
+          "agent",
+          "proxy",
+          "gateway",
+          "control",
+          "datanode"
+        ],
+        "note": "에이전트는 자리표시자만 들고 나가고, 실제 여권은 프록시가 붙이며, 게이트웨이가 제어면에서 검증한다."
+      },
+      {
+        "id": "guardrail",
+        "label": "가드레일",
+        "focus": [
+          "agent",
+          "model"
+        ],
+        "note": "도구 결과는 NVIDIA 스킬로 만든 정책으로 검사한다. 걸리면 격리하고, 답변에 경고를 코드가 붙인다."
+      },
+      {
+        "id": "human-approval",
+        "label": "사람의 승인",
+        "focus": [
+          "agent",
+          "datanode",
+          "analyst",
+          "approver"
+        ],
+        "note": "에이전트는 한도 변경을 준비만 한다. 실제 변경은 데이터 노드의 사람이 승인한다."
+      }
+    ]
+  },
+  "participants": [
+    {
+      "id": "analyst",
+      "type": "external",
+      "label": "심사 담당자",
+      "sublabel": "사람"
+    },
+    {
+      "id": "agent",
+      "type": "backend",
+      "label": "에이전트",
+      "sublabel": "샌드박스 안"
+    },
+    {
+      "id": "model",
+      "type": "backend",
+      "label": "Nemotron",
+      "sublabel": "로컬 · 가드레일"
+    },
+    {
+      "id": "proxy",
+      "type": "security",
+      "label": "OpenShell",
+      "sublabel": "프록시 · 송신 정책"
+    },
+    {
+      "id": "gateway",
+      "type": "security",
+      "label": "게이트웨이",
+      "sublabel": "Agent Fabric"
+    },
+    {
+      "id": "control",
+      "type": "cloud",
+      "label": "제어면",
+      "sublabel": "Agent Fabric"
+    },
+    {
+      "id": "datanode",
+      "type": "database",
+      "label": "데이터 노드",
+      "sublabel": "MCP · DB"
+    },
+    {
+      "id": "approver",
+      "type": "external",
+      "label": "승인자",
+      "sublabel": "데이터 노드 담당"
+    }
+  ],
+  "segments": [
+    {
+      "from": 146,
+      "to": 426,
+      "label": "지시 · 호출"
+    },
+    {
+      "from": 436,
+      "to": 506,
+      "label": "가드레일"
+    },
+    {
+      "from": 516,
+      "to": 592,
+      "label": "승인"
+    }
+  ],
+  "messages": [
+    {
+      "from": "analyst",
+      "to": "agent",
+      "y": 170,
+      "label": "90일 위험 신호 정리",
+      "variant": "emphasis"
+    },
+    {
+      "from": "agent",
+      "to": "proxy",
+      "y": 210,
+      "label": "tools/call · 자리표시자",
+      "variant": "emphasis"
+    },
+    {
+      "from": "proxy",
+      "to": "gateway",
+      "y": 250,
+      "label": "실제 여권 주입",
+      "variant": "security"
+    },
+    {
+      "from": "gateway",
+      "to": "control",
+      "y": 290,
+      "label": "여권 검증",
+      "variant": "security"
+    },
+    {
+      "from": "control",
+      "to": "gateway",
+      "y": 330,
+      "label": "허용",
+      "variant": "return"
+    },
+    {
+      "from": "gateway",
+      "to": "datanode",
+      "y": 370,
+      "label": "WireGuard 메시",
+      "variant": "emphasis"
+    },
+    {
+      "from": "datanode",
+      "to": "agent",
+      "y": 410,
+      "label": "집계만 반환",
+      "variant": "return"
+    },
+    {
+      "from": "agent",
+      "to": "model",
+      "y": 450,
+      "label": "결과 검사 · 정책"
+    },
+    {
+      "from": "model",
+      "to": "agent",
+      "y": 490,
+      "label": "harmful → 격리",
+      "variant": "return"
+    },
+    {
+      "from": "agent",
+      "to": "analyst",
+      "y": 530,
+      "label": "요약 · 경고 · 승인 대기",
+      "variant": "return"
+    },
+    {
+      "from": "approver",
+      "to": "datanode",
+      "y": 570,
+      "label": "준비된 변경 승인",
+      "variant": "emphasis"
+    }
+  ],
+  "activations": [
+    {
+      "participant": "agent",
+      "from": 164,
+      "to": 538,
+      "type": "backend"
+    },
+    {
+      "participant": "gateway",
+      "from": 244,
+      "to": 378,
+      "type": "security"
+    },
+    {
+      "participant": "control",
+      "from": 284,
+      "to": 338,
+      "type": "cloud"
+    },
+    {
+      "participant": "datanode",
+      "from": 364,
+      "to": 418,
+      "type": "database"
+    },
+    {
+      "participant": "model",
+      "from": 444,
+      "to": 498,
+      "type": "backend"
+    },
+    {
+      "participant": "datanode",
+      "from": 564,
+      "to": 586,
+      "type": "database"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "토큰은 에이전트를 지나가지 않는다",
+      "items": [
+        "에이전트는 자리표시자만 보내고, 프록시가 게이트웨이 요청에만 실제 여권을 붙인다",
+        "게이트웨이가 서비스·메서드·만료를 검증한다"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "모델이 속아도 결과는 같다",
+      "items": [
+        "가드레일이 데이터 속 지시를 격리하고, 경고는 코드가 답변에 붙인다",
+        "원본 행은 데이터 노드를 떠나지 않는다"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "그림에서 줄인 부분",
+      "items": [
+        "모델의 계획 단계와 한도 변경 준비 호출은 생략했다",
+        "두 호출도 같은 프록시·게이트웨이 검사를 거친다"
+      ]
+    }
+  ]
+}

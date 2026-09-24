@@ -13,20 +13,17 @@ gateway**, which forwards a call to another machine only when a short-lived capa
 allows that exact service and method. The agent never holds that capability: OpenShell
 injects it on the wire.
 
-```mermaid
-flowchart LR
-  U["Analyst"] --> A
-  subgraph S1["Agent node · DGX Spark"]
-    A["Agent<br/>OpenShell sandbox"] --> M["Nemotron<br/>local model"]
-    A -->|"only allowed egress<br/>+ injected capability"| G["Agent Fabric gateway"]
-  end
-  G -->|"WireGuard mesh"| T
-  subgraph S2["Data node"]
-    T["ledger-read MCP<br/>aggregates only"] --> D[("ledger DB")]
-    X["ledger-admin MCP<br/>raw export"] --> D
-  end
-  P["Person on data node"] -.->|"approves tier-3"| X
-```
+## Architecture
+
+![System architecture](docs/diagrams/system-architecture.gif)
+
+![Service flow](docs/diagrams/service-flow.gif)
+
+Interactive versions (zoom, trace a route, play the guided chapters):
+[system architecture](https://falcons-eyes.github.io/agent-fabric-openshell-recipe/docs/diagrams/system-architecture.html) ·
+[service flow](https://falcons-eyes.github.io/agent-fabric-openshell-recipe/docs/diagrams/service-flow.html).
+They were made with [archify](https://github.com/tt-a1i/archify) and pass its showcase validation and
+real-browser check; sources and receipts are in [`docs/diagrams/`](docs/diagrams/README.md).
 
 ## What the demo shows
 

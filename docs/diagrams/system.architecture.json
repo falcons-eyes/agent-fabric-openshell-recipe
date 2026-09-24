@@ -1,0 +1,338 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Secure Agent Passport — 시스템 아키텍처",
+    "quality_profile": "showcase",
+    "animation": "trace",
+    "views": [
+      {
+        "id": "happy-path",
+        "label": "정상 경로",
+        "focus": [
+          "analyst",
+          "agent",
+          "proxy",
+          "model",
+          "gateway",
+          "control",
+          "read",
+          "db"
+        ],
+        "note": "에이전트의 유일한 출구는 OpenShell 프록시이고, 사내 데이터로 가는 길은 게이트웨이 하나다."
+      },
+      {
+        "id": "where-it-stops",
+        "label": "막히는 곳",
+        "focus": [
+          "agent",
+          "proxy",
+          "internet",
+          "gateway",
+          "admin"
+        ],
+        "note": "외부 송신은 OpenShell이 막고, 여권 범위 밖 서비스는 게이트웨이가 막는다. 관리자 서비스로 가는 경로는 없다."
+      },
+      {
+        "id": "people-and-records",
+        "label": "사람과 기록",
+        "focus": [
+          "gateway",
+          "model",
+          "admin",
+          "approver",
+          "db"
+        ],
+        "note": "변경은 사람이 승인하고, 호출은 게이트웨이 원장과 데이터 노드 로그에 남는다."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "analyst",
+      "type": "external",
+      "label": "심사 담당자",
+      "sublabel": "업무 지시",
+      "pos": [
+        40,
+        300
+      ],
+      "size": [
+        128,
+        62
+      ]
+    },
+    {
+      "id": "agent",
+      "type": "backend",
+      "label": "분석 에이전트",
+      "sublabel": "토큰 대신 자리표시자",
+      "pos": [
+        240,
+        300
+      ],
+      "size": [
+        150,
+        62
+      ],
+      "tag": "sandbox"
+    },
+    {
+      "id": "proxy",
+      "type": "security",
+      "label": "OpenShell 프록시",
+      "sublabel": "송신 정책 · 여권 주입",
+      "pos": [
+        460,
+        300
+      ],
+      "size": [
+        156,
+        62
+      ]
+    },
+    {
+      "id": "model",
+      "type": "backend",
+      "label": "Nemotron (로컬)",
+      "sublabel": "계획 · 가드레일 검사",
+      "pos": [
+        690,
+        150
+      ],
+      "size": [
+        168,
+        62
+      ]
+    },
+    {
+      "id": "gateway",
+      "type": "security",
+      "label": "Agent Fabric 게이트웨이",
+      "sublabel": "여권 검사 · 원장 · freeze",
+      "pos": [
+        690,
+        300
+      ],
+      "size": [
+        168,
+        62
+      ],
+      "tag": "only door"
+    },
+    {
+      "id": "internet",
+      "type": "external",
+      "label": "외부 인터넷",
+      "sublabel": "프록시에서 403 · 도달 안 함",
+      "pos": [
+        460,
+        470
+      ],
+      "size": [
+        156,
+        62
+      ],
+      "tag": "blocked"
+    },
+    {
+      "id": "control",
+      "type": "cloud",
+      "label": "Agent Fabric 제어면",
+      "sublabel": "여권 발급 · 검증",
+      "pos": [
+        690,
+        470
+      ],
+      "size": [
+        168,
+        62
+      ]
+    },
+    {
+      "id": "read",
+      "type": "backend",
+      "label": "ledger-read MCP",
+      "sublabel": "집계만 반환",
+      "pos": [
+        960,
+        250
+      ],
+      "size": [
+        150,
+        62
+      ]
+    },
+    {
+      "id": "admin",
+      "type": "backend",
+      "label": "ledger-admin MCP",
+      "sublabel": "관리 전용 · 여권 범위 밖",
+      "pos": [
+        960,
+        420
+      ],
+      "size": [
+        150,
+        62
+      ],
+      "tag": "not granted"
+    },
+    {
+      "id": "db",
+      "type": "database",
+      "label": "거래 DB",
+      "sublabel": "PostgreSQL · 합성 데이터",
+      "pos": [
+        1180,
+        335
+      ],
+      "size": [
+        150,
+        62
+      ]
+    },
+    {
+      "id": "approver",
+      "type": "external",
+      "label": "승인자",
+      "sublabel": "데이터 노드 담당자",
+      "pos": [
+        960,
+        570
+      ],
+      "size": [
+        150,
+        62
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "에이전트 노드 · DGX Spark",
+      "wraps": [
+        "agent",
+        "proxy",
+        "model",
+        "gateway"
+      ],
+      "pad": 22
+    },
+    {
+      "kind": "security-group",
+      "label": "OpenShell 샌드박스",
+      "wraps": [
+        "agent"
+      ],
+      "pad": 12
+    },
+    {
+      "kind": "region",
+      "label": "데이터 노드 · 사내",
+      "wraps": [
+        "read",
+        "admin",
+        "db"
+      ],
+      "pad": 22
+    }
+  ],
+  "connections": [
+    {
+      "from": "analyst",
+      "to": "agent",
+      "label": "작업 지시",
+      "variant": "emphasis"
+    },
+    {
+      "from": "agent",
+      "to": "proxy",
+      "label": "모든 송신",
+      "variant": "emphasis"
+    },
+    {
+      "from": "proxy",
+      "to": "model",
+      "label": "허용 ① 모델",
+      "fromSide": "top",
+      "toSide": "left"
+    },
+    {
+      "from": "proxy",
+      "to": "gateway",
+      "label": "허용 ② + 여권",
+      "variant": "security"
+    },
+    {
+      "from": "proxy",
+      "to": "internet",
+      "label": "403 거부",
+      "variant": "dashed",
+      "labelAt": [
+        582,
+        376
+      ]
+    },
+    {
+      "from": "gateway",
+      "to": "control",
+      "label": "여권 검증",
+      "variant": "security",
+      "labelAt": [
+        826,
+        376
+      ]
+    },
+    {
+      "from": "gateway",
+      "to": "read",
+      "label": "WireGuard 메시",
+      "variant": "emphasis"
+    },
+    {
+      "from": "read",
+      "to": "db",
+      "label": "SQL 집계"
+    },
+    {
+      "from": "admin",
+      "to": "db",
+      "label": "원본 행"
+    },
+    {
+      "from": "approver",
+      "to": "admin",
+      "label": "등급 3 승인"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "두 개의 경계",
+      "items": [
+        "기계 안: OpenShell이 송신을 모델과 게이트웨이 두 곳으로만 허용",
+        "기계 사이: 게이트웨이가 서비스·메서드·만료가 박힌 여권만 통과",
+        "여권은 전송 중에만 주입되어 에이전트는 실제 토큰을 보지 못함"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "사람과 기록",
+      "items": [
+        "한도 변경은 준비만 하고 데이터 노드의 사람이 승인",
+        "게이트웨이 원장: 허용과 거부를 바이트와 함께 기록",
+        "freeze 한 줄이면 다음 호출부터 거부"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "검증 범위",
+      "items": [
+        "모든 흐름은 Mac 한 대(두 노드 겸용)에서 실제로 실행해 확인",
+        "DGX Spark에서 전 과정을 돌리는 검증은 진행 중",
+        "가드레일 검증에는 대체 모델(Nemotron 3 Nano)을 사용"
+      ]
+    }
+  ]
+}
