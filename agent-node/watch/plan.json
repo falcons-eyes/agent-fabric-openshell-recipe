@@ -1,0 +1,8 @@
+{
+  "설명": "이 에이전트가 이번 작업에서 할 일을 미리 적어둔 계획. 원장이 이 범위를 벗어나면 게이트웨이를 즉시 멈춘다.",
+  "허용": {
+    "ledger-read": ["initialize", "notifications/initialized", "tools/list", "tools/call"]
+  },
+  "최대_반출_바이트": 20000,
+  "허용하는_거부_횟수": 0
+}

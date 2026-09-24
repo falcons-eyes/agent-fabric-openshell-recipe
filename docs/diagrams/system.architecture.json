@@ -38,12 +38,12 @@
         "label": "사람과 기록",
         "focus": [
           "gateway",
-          "model",
+          "watch",
           "admin",
           "approver",
           "db"
         ],
-        "note": "변경은 사람이 승인하고, 호출은 게이트웨이 원장과 데이터 노드 로그에 남는다."
+        "note": "원장을 미리 적은 계획과 계속 대조해 벗어나면 바로 멈추고, 변경은 사람이 승인한다."
       }
     ]
   },
@@ -97,11 +97,11 @@
       "label": "Nemotron (로컬)",
       "sublabel": "계획 · 가드레일 검사",
       "pos": [
-        690,
+        460,
         150
       ],
       "size": [
-        168,
+        156,
         62
       ]
     },
@@ -205,6 +205,20 @@
         150,
         62
       ]
+    },
+    {
+      "id": "watch",
+      "type": "security",
+      "label": "계획 감시기",
+      "sublabel": "원장 대조 · 이탈 시 freeze",
+      "pos": [
+        690,
+        150
+      ],
+      "size": [
+        168,
+        62
+      ]
     }
   ],
   "boundaries": [
@@ -215,7 +229,8 @@
         "agent",
         "proxy",
         "model",
-        "gateway"
+        "gateway",
+        "watch"
       ],
       "pad": 22
     },
@@ -254,9 +269,7 @@
     {
       "from": "proxy",
       "to": "model",
-      "label": "허용 ① 모델",
-      "fromSide": "top",
-      "toSide": "left"
+      "label": "허용 ① 모델"
     },
     {
       "from": "proxy",
@@ -304,6 +317,16 @@
       "from": "approver",
       "to": "admin",
       "label": "등급 3 승인"
+    },
+    {
+      "from": "watch",
+      "to": "gateway",
+      "label": "이탈 시 freeze",
+      "variant": "security",
+      "labelAt": [
+        774,
+        256
+      ]
     }
   ],
   "cards": [
@@ -320,9 +343,9 @@
       "dot": "rose",
       "title": "사람과 기록",
       "items": [
-        "한도 변경은 준비만 하고 데이터 노드의 사람이 승인",
-        "게이트웨이 원장: 허용과 거부를 바이트와 함께 기록",
-        "freeze 한 줄이면 다음 호출부터 거부"
+        "게이트웨이 원장: 허용·거부를 바이트와 함께 기록",
+        "계획 감시기: 원장이 계획을 벗어나면 자동 freeze",
+        "한도 변경은 준비만 하고 데이터 노드의 사람이 승인"
       ]
     },
     {
