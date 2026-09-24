@@ -7,6 +7,7 @@ RUN=("$OPENSHELL" sandbox create --from "$ROOT/agent-node/agent" --provider fabr
      --policy "$ROOT/agent-node/openshell/sandbox-policy.yaml"
      --env "FABRIC_GATEWAY_URL=http://host.openshell.internal:${GATEWAY_PORT}"
      --env "FABRIC_NETWORK=${FABRIC_NETWORK}" --env "LLM_BASE_URL=${MODEL_URL}" --env "LLM_MODEL=${MODEL}"
+     ${GUARDRAIL_URL:+--env "GUARDRAIL_URL=${GUARDRAIL_URL}" --env "GUARDRAIL_MODEL=${GUARDRAIL_MODEL}"}
      --no-keep --)
 
 say "1. the job: the agent plans, calls the ledger through the gateway, and answers"

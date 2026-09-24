@@ -39,6 +39,19 @@ flowchart LR
 | Record | Every call through the gateway, allowed or refused, with bytes each way and the capability id | `fabric gateway ledger` on the agent node, and `fintech.agent_log` on the data node |
 | Emergency stop | An operator stops the agent mid-task | `fabric gateway freeze --all`: the very next call is refused, before any control-plane round trip |
 
+### Guardrail built with an NVIDIA skill
+
+`agent-node/guardrail/` holds a **Fintech Agent Boundary** content-safety policy
+generated with NVIDIA's [`nemotron-policy-generator`](https://build.nvidia.com/skills)
+skill (Markdown + JSON validated against the skill's schema + a Nemotron
+content-safety system prompt). With `GUARDRAIL_URL` set, every tool result is screened
+by a Nemotron content-safety model before the planner reads it. If it is flagged, the
+result is quarantined, and the agent's answer always ends with a security warning. The
+warning is added by code, because in our runs the planner read the planted memo and
+presented it as a legitimate note.
+
+This layer is detection. The hard controls are the OpenShell policy and the gateway.
+
 The controls do not depend on the model behaving. `agent.py --replay-attack` performs
 the injected actions deliberately, with no model in the loop, and they still fail.
 
@@ -86,6 +99,7 @@ build.nvidia.com instead of a local model, attach OpenShell's `nvidia` provider 
 | `data-node/ledger_mcp/` | MCP server, one process per role (`read`, `admin`); official MCP Python SDK |
 | `data-node/db/` | Synthetic lender data (every company and amount is invented) and the attack memo |
 | `skills/fabric-access/` | Agent Skill (`SKILL.md` + skill card) teaching an agent to use the gateway |
+| `agent-node/guardrail/` | Content-safety policy made with NVIDIA's `nemotron-policy-generator` skill, and `render.py` to regenerate it |
 | `scripts/` | Bring-up, demo and approval |
 | `docs/VERIFICATION.md` | What was run, on what, and what came back |
 | `docs/demo-run.txt` | Unedited output of one full `scripts/demo.sh` run |

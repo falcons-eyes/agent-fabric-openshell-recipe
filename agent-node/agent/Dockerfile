@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends iproute2 nftabl
 RUN groupadd --gid 1500 app && useradd --uid 1500 --gid app --create-home app \
     && install -d -o app -g app /sandbox
 COPY agent.py /app/agent.py
+COPY guardrail/ /app/guardrail/
 WORKDIR /sandbox
 USER app
 CMD ["python3", "/app/agent.py", "--probe"]
