@@ -63,8 +63,16 @@ ollama pull nemotron-3-nano:30b          # or serve Nemotron with NIM / vLLM on 
 ./scripts/approve.sh <approval_id>
 ```
 
-On DGX Spark (Linux), the sandbox reaches host services through the Docker bridge, so
-start the gateway there: `GATEWAY_LISTEN=172.17.0.1:17777 ./scripts/agent-node-up.sh`.
+On DGX Spark (Linux), the sandbox reaches the host through OpenShell's own bridge, not
+loopback. Find its address, then start the gateway there:
+
+```bash
+openshell sandbox create --no-keep -- getent hosts host.openshell.internal   # 172.19.0.1 on our Spark
+GATEWAY_LISTEN=172.19.0.1:17777 ./scripts/agent-node-up.sh
+```
+
+If an older OpenShell (for example one installed with NemoClaw) comes first on `PATH`,
+set `OPENSHELL=/usr/bin/openshell`.
 It still refuses any request without a valid capability. To use Nemotron on
 build.nvidia.com instead of a local model, attach OpenShell's `nvidia` provider and set
 `MODEL_URL=https://integrate.api.nvidia.com/v1`.

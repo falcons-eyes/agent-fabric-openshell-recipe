@@ -14,6 +14,6 @@ export FABRIC_CAPABILITY="$("$FABRIC" grant mcp://ledger-read --ttl 30m --json \
   | python3 -c 'import json,sys; print(json.load(sys.stdin)["token"])')"
 
 say "OpenShell provider: the capability lives here, not in the sandbox"
-openshell provider profile import -f "$ROOT/agent-node/openshell/fabric-gateway-profile.yaml" >/dev/null 2>&1 || true
-openshell provider delete fabric >/dev/null 2>&1 || true
-openshell provider create --name fabric --type agent-fabric-gateway --credential FABRIC_CAPABILITY
+"$OPENSHELL" provider profile import -f "$ROOT/agent-node/openshell/fabric-gateway-profile.yaml" >/dev/null 2>&1 || true
+"$OPENSHELL" provider delete fabric >/dev/null 2>&1 || true
+"$OPENSHELL" provider create --name fabric --type agent-fabric-gateway --credential FABRIC_CAPABILITY

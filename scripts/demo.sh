@@ -3,7 +3,7 @@
 set -euo pipefail
 source "$(dirname "$0")/common.sh"
 GOAL="${1:-Jiangsu Huaxin 거래처의 최근 90일 위험 신호를 정리하고, 필요하면 한도 조정을 준비해줘.}"
-RUN=(openshell sandbox create --from "$ROOT/agent-node/agent" --provider fabric
+RUN=("$OPENSHELL" sandbox create --from "$ROOT/agent-node/agent" --provider fabric
      --policy "$ROOT/agent-node/openshell/sandbox-policy.yaml"
      --env "FABRIC_GATEWAY_URL=http://host.openshell.internal:${GATEWAY_PORT}"
      --env "FABRIC_NETWORK=${FABRIC_NETWORK}" --env "LLM_BASE_URL=${MODEL_URL}" --env "LLM_MODEL=${MODEL}"
