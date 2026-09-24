@@ -1,0 +1,13 @@
+[1;32m$[0m ./scripts/approve.sh 4 james   # a person on the data node
+{
+  "approval_id": 4,
+  "status": "approved",
+  "decided_by": "james"
+}
+ approval_id |  cp_id  |              params              |  status  | decided_by 
+-------------+---------+----------------------------------+----------+------------
+           4 | CP-0001 | {"new_limit_bucket": "B"}        | approved | james
+           3 | CP-0001 | {"new_limit_bucket": "LOW_RISK"} | pending  | 
+           2 | CP-0001 | {"new_limit_bucket": "B"}        | pending  | 
+(3 rows)
+

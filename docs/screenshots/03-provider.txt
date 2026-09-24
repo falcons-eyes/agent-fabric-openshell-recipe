@@ -1,0 +1,25 @@
+[1;32m$[0m openshell provider list && openshell provider profile export agent-fabric-gateway -o yaml | sed -n '1,22p'
+[1mNAME  [0m  [1mTYPE                [0m  [1mCREDENTIAL_KEYS [0m  [1mCONFIG_KEYS[0m
+fabric  agent-fabric-gateway  1                 0
+id: agent-fabric-gateway
+resource_version: 1
+display_name: Agent Fabric gateway
+description: Capability-gated access to private services over the Agent Fabric mesh
+category: other
+credentials:
+- name: capability
+  description: Agent Fabric capability token (fabric grant ...)
+  env_vars:
+  - FABRIC_CAPABILITY
+  required: true
+  auth_style: bearer
+  header_name: authorization
+  query_param: ''
+endpoints:
+- host: host.openshell.internal
+  port: 17777
+  protocol: rest
+  access: read-write
+  enforcement: enforce
+binaries:
+- /usr/bin/python3

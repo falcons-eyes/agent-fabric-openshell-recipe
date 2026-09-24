@@ -30,6 +30,9 @@ flowchart LR
 
 ## What the demo shows
 
+See it step by step, with screenshots of real runs: [docs/DEMO_WALKTHROUGH.md](docs/DEMO_WALKTHROUGH.md).
+
+
 | Step | What happens | What stops it / records it |
 | --- | --- | --- |
 | The job | "Summarize Jiangsu Huaxin's risk signals for the last 90 days." The agent plans, calls `ledger-read` through the gateway, gets bucketed aggregates, and answers | The capability allows `mcp://ledger-read` and its MCP methods only, for 30 minutes |
@@ -103,6 +106,7 @@ build.nvidia.com instead of a local model, attach OpenShell's `nvidia` provider 
 | `scripts/` | Bring-up, demo and approval |
 | `docs/VERIFICATION.md` | What was run, on what, and what came back |
 | `docs/demo-run.txt` | Unedited output of one full `scripts/demo.sh` run |
+| `docs/DEMO_WALKTHROUGH.md` | Screenshots of every step, each rendered from a real run (raw output kept next to each image) |
 
 ## Honest limits
 

@@ -1,0 +1,13 @@
+[1;32m$[0m psql -c "select at, executed as tool, risk_tier, rows_out, bytes_out, status from fintech.agent_log ..."   # on the data node
+    at    |           tool            | tier | rows_out | bytes_out |     status     
+----------+---------------------------+------+----------+-----------+----------------
+ 08:31:50 | prepare_limit_change      |    3 |        1 |       132 | needs_approval
+ 08:30:45 | counterparty_risk_summary |    1 |        1 |       755 | ok
+ 08:30:16 | find_counterparty         |    1 |        6 |       465 | ok
+ 08:29:55 | find_counterparty         |    1 |        0 |         2 | ok
+ 08:29:18 | find_counterparty         |    1 |        0 |         2 | ok
+ 08:28:59 | find_counterparty         |    1 |        0 |         2 | ok
+ 08:28:16 | find_counterparty         |    1 |        0 |         2 | ok
+ 07:01:15 | counterparty_risk_summary |    1 |        1 |       755 | ok
+(8 rows)
+

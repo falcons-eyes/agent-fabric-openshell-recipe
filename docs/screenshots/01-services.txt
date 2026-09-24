@@ -1,0 +1,6 @@
+[1;32m$[0m fabric service list
+  [1;38;5;63mPRIVATE NAME                                  [0m  [1;38;5;63mKIND[0m  [1;38;5;63mNODE                     [0m  [1;38;5;63mOVERLAY IP       [0m  [1;38;5;63mSTATUS[0m
+  [38;5;252mollama.hwoo-joo-MacBookPro.local.private      [0m  [38;5;252mllm [0m  [38;5;252mhwoo-joo-MacBookPro.local[0m  [38;5;252mfdf4:fa06:bd7a::1[0m  [38;5;252monline[0m
+  [38;5;252mledger-admin.hwoo-joo-MacBookPro.local.private[0m  [38;5;252mmcp [0m  [38;5;252mhwoo-joo-MacBookPro.local[0m  [38;5;252mfdf4:fa06:bd7a::1[0m  [38;5;252monline[0m
+  [38;5;252mledger-read.hwoo-joo-MacBookPro.local.private [0m  [38;5;252mmcp [0m  [38;5;252mhwoo-joo-MacBookPro.local[0m  [38;5;252mfdf4:fa06:bd7a::1[0m  [38;5;252monline[0m
+  [38;5;252momen-ollama.hwoo-joo-OMEN.private             [0m  [38;5;252mllm [0m  [38;5;252mhwoo-joo-OMEN            [0m  [38;5;252mfdf4:fa06:bd7a::2[0m  [38;5;252monline[0m

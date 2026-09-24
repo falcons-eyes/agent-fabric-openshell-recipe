@@ -1,0 +1,2 @@
+[1;32m$[0m ./scripts/sandbox-run.sh sh -c 'sleep 2; echo "FABRIC_CAPABILITY inside the sandbox = $FABRIC_CAPABILITY"'
+FABRIC_CAPABILITY inside the sandbox = openshell:resolve:env:v3263098579921027444_FABRIC_CAPABILITY

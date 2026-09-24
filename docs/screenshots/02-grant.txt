@@ -1,0 +1,11 @@
+[1;32m$[0m fabric grant mcp://ledger-read --ttl 30m --json | jq '{resource, actions, ttl}'   # the token itself is not shown
+[1;39m{
+  [0m[1;34m"resource"[0m[1;39m: [0m[0;32m"mcp://ledger-read"[0m[1;39m,
+  [0m[1;34m"actions"[0m[1;39m: [0m[1;39m[
+    [0;32m"initialize"[0m[1;39m,
+    [0;32m"notifications/initialized"[0m[1;39m,
+    [0;32m"tools/list"[0m[1;39m,
+    [0;32m"tools/call"[0m[1;39m
+  [1;39m][0m[1;39m,
+  [0m[1;34m"ttl"[0m[1;39m: [0m[0;32m"30m0s"[0m[1;39m
+[1;39m}[0m
