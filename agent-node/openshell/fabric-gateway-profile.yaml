@@ -1,0 +1,31 @@
+# OpenShell provider profile: the Agent Fabric gateway on the agent node.
+#
+# This is the ONE door from the sandbox to the organization's private services.
+# The agent sees only the placeholder in $FABRIC_CAPABILITY; the OpenShell proxy
+# swaps in the real capability token on the wire, and only for requests to this
+# endpoint. A capability copied into a prompt, a log or an upload is therefore
+# worthless: it is not the real token, and it would not be substituted anywhere else.
+#
+# The gateway itself checks the capability against the control plane on every
+# call (service + JSON-RPC method + expiry), and forwards over the WireGuard mesh.
+id: agent-fabric-gateway
+display_name: Agent Fabric gateway
+description: Capability-gated access to private services over the Agent Fabric mesh
+category: other
+credentials:
+  - name: capability
+    description: Agent Fabric capability token (fabric grant ...)
+    env_vars: [FABRIC_CAPABILITY]
+    required: true
+    auth_style: bearer
+    header_name: authorization
+endpoints:
+  - host: host.openshell.internal
+    port: 17777
+    protocol: rest
+    access: read-write
+    enforcement: enforce
+binaries:
+  - /usr/bin/python3
+  - /usr/local/bin/python3
+  - /usr/local/bin/python3.12

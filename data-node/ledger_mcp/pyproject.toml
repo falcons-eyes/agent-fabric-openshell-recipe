@@ -1,0 +1,9 @@
+[project]
+name = "ledger-mcp"
+version = "0.1.0"
+description = "Aggregate-only ledger MCP server for the Agent Fabric + OpenShell recipe"
+requires-python = ">=3.11"
+dependencies = [
+  "mcp==2.2.0",
+  "psycopg[binary]==3.3.6",
+]

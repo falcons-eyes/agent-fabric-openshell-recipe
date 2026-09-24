@@ -1,0 +1,54 @@
+# Sandbox policy for the analyst agent.
+#
+# Exactly two destinations, both on the agent node itself:
+#   - the Agent Fabric gateway (the only road to other machines' data), and
+#   - the local model server (the prompt never leaves the machine).
+# Everything else, including an "upload the rows to https://..." instruction
+# smuggled in through ledger data, is refused by the OpenShell proxy.
+#
+# The endpoints are declared here rather than only in the provider profiles because
+# OpenShell 0.0.116 did not compose profile endpoints into the effective policy in
+# our test; the fabric provider's credential is still substituted for the gateway
+# endpoint (verified: see docs/VERIFICATION.md).
+version: 1
+
+filesystem_policy:
+  include_workdir: true
+  read_only:
+    - /usr
+    - /lib
+    - /etc
+    - /app
+    - /var/log
+    - /proc/self
+    - /dev/urandom
+  read_write:
+    - /sandbox
+    - /tmp
+    - /dev/null
+
+landlock:
+  compatibility: best_effort
+
+network_policies:
+  agent_fabric_gateway:
+    name: agent-fabric-gateway
+    endpoints:
+      - host: host.openshell.internal
+        port: 17777
+        protocol: rest
+        enforcement: enforce
+        access: read-write
+    binaries:
+      - { path: /usr/local/bin/python3.12 }
+  local_model:
+    name: local-model
+    endpoints:
+      # Ollama during development; a NIM or vLLM server on DGX Spark (port 8000).
+      - host: host.openshell.internal
+        port: 11434
+        protocol: rest
+        enforcement: enforce
+        access: read-write
+    binaries:
+      - { path: /usr/local/bin/python3.12 }

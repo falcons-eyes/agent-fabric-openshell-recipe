@@ -1,0 +1,20 @@
+# OpenShell provider profile for a model served on the agent node itself
+# (NIM or vLLM on DGX Spark, or Ollama during development). Credentialless:
+# the model never leaves the machine. For Nemotron on build.nvidia.com use
+# OpenShell's built-in `nvidia` provider instead.
+id: local-llm
+display_name: Local model server
+description: OpenAI-compatible model server on the agent node (NIM / vLLM / Ollama)
+category: inference
+inference_capable: true
+credentials: []
+endpoints:
+  - host: host.openshell.internal
+    port: 11434
+    protocol: rest
+    access: read-write
+    enforcement: enforce
+binaries:
+  - /usr/bin/python3
+  - /usr/local/bin/python3
+  - /usr/local/bin/python3.12
