@@ -1,6 +1,6 @@
-# Agent Fabric × NVIDIA OpenShell: agents that reach private data on other machines, and can prove what left
+# Secure Agent Passport: agents that reach private data on other machines, and can prove what left
 
-**OpenShell guards the agent inside its machine. Agent Fabric guards the moment the agent reaches data and tools on another machine, and records it.**
+**A secure agent is one that causes no incident even when its model is fooled. NVIDIA OpenShell guards the agent inside its machine; Agent Fabric's Secure Agent Passport guards the moment it reaches data and tools on another machine, and records it.**
 
 Regulated teams can now run AI agents on their own hardware (DGX Spark), but the useful
 data lives on *other* machines: a ledger database, a document store, a teammate's GPU box.
