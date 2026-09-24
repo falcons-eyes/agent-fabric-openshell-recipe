@@ -78,6 +78,25 @@ def build(role: str) -> MCPServer:
 
     if role == "read":
 
+        @srv.tool(
+            description=(
+                "List counterparties that had external risk events in the last N days, most severe "
+                "first: cp_id, name, event type, severity and date. No amounts."
+            )
+        )
+        def list_risk_events(days: int = 30) -> list[dict]:
+            days = max(1, min(int(days), 365))
+            rows = q(
+                """SELECT cp.cp_id, cp.name, cp.country, e.type, e.severity, e.event_time::date
+                   FROM fe_event e JOIN counterparty cp ON cp.fe_id = e.fe_id
+                   WHERE e.event_time >= (SELECT max(event_time) FROM fe_event) - make_interval(days => %s)
+                   ORDER BY CASE e.severity WHEN 'critical' THEN 0 WHEN 'high' THEN 1 WHEN 'medium' THEN 2 ELSE 3 END,
+                            e.event_time DESC""",
+                days,
+            )
+            out = [{"cp_id": r[0], "name": r[1], "country": r[2], "event": r[3], "severity": r[4], "date": str(r[5])} for r in rows]
+            return log(actor, "list_risk_events", {"days": days}, 1, "ok", out, len(out))
+
         @srv.tool(description="Find counterparties by name. Returns ids, names and countries only.")
         def find_counterparty(name_query: str) -> list[dict]:
             rows = q(

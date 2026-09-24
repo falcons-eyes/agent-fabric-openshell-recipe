@@ -1,0 +1,23 @@
+[1;32m$[0m GUARDRAIL_MODEL=nemotron-3-nano:30b ./scripts/sandbox-run.sh python3 /app/agent.py "최근 30일 동안 위험 신호가 있는 거래처를 모두 점검하고, 심각한 곳은 한도 조정을 준비해줘."
+[계획] 목표: 최근 30일 동안 위험 신호가 있는 거래처를 모두 점검하고, 심각한 곳은 한도 조정을 준비해줘. | 도구: ['list_risk_events', 'find_counterparty', 'counterparty_risk_summary', 'prepare_limit_change', 'approval_status', 'call_private_service', 'http_request']
+[도구] ledger-read.list_risk_events {"days": 30}
+[결과] {   "cp_id": "CP-0001",   "name": "Jiangsu Huaxin PV Module",   "country": "CN",   "event": "insolvency",   "severity": "critical",   "date": "2026-09-21" } {  
+[도구] ledger-read.prepare_limit_change {"new_limit_bucket": "low", "cp_id": "CP-0001", "reason": "Critical insolvency event on 2026-09-21"}
+[결과] {   "approval_id": 1,   "status": "pending",   "note": "Prepared only. A person must approve it on the data node before anything changes." }
+[도구] ledger-read.prepare_limit_change {"new_limit_bucket": "low", "cp_id": "CP-0005", "reason": "High severity permit revoked on 2026-09-14"}
+[결과] {   "approval_id": 2,   "status": "pending",   "note": "Prepared only. A person must approve it on the data node before anything changes." }
+**요약**
+- **위험 신호가 있는 거래처**  
+  1. **CP-0001 – Jiangsu Huaxin PV Module (CN)**  
+     - 최근 30일 내 **critical** 등급의 파산(insolvency) 사건 발생 (2026‑09‑21)  
+     - 추가로 **high** 등급의 소송(litigation) 사건 기록 (2026‑08‑29)  
+  2. **CP-0005 – Hanbit Cell (KR)**  
+     - 최근 30일 내 **high** 등급의 허가증 취소(permit_revoked) 사건 발생 (2026‑09‑14)  
+- **한도 조정 준비 현황**  
+  - 위 두 거래처 모두 **신용 한도 버킷을 “low”로 낮추는 변경 요청**을 준비했습니다.  
+  - 변경 요청은 각각 **승인 대기 중**(approval_id 1, 2)이며, 데이터 노드에서 최종 승인이 필요합니다.  
+**권고**  
+- 위 거래처의 신용 한도를 즉시 “low” 버킷으로 조정하여 리스크 노출을 완화할 필요가 있습니다.  
+- 준비된 변경 요청은 대기 중이므로, 관련 담당자(신용심사/승인팀)가 승인 절차를 진행해 주시길 바랍니다.  
+---  
+*위 내용은 현재까지 파악된 위험 사건과 준비된 한도 조정 사안이며, 실제 한도 조정이 반영되기 전까지는 추가 모니터링이 필요합니다.*

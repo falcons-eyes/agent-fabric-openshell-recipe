@@ -24,6 +24,7 @@
 | 10 | ![](screenshots/10-approval.png) | 사람이 승인하고, 승인자 이름이 남는다. |
 | 11 | ![](screenshots/11-guardrail-policy.png) | 가드레일 정책은 NVIDIA 스킬로 만들고 스키마 검증을 통과했다. |
 | 12 | ![](screenshots/12-plan-watch.png) | 계획에 없는 호출이 나오자마자 게이트웨이가 스스로 멈춘다. |
+| 13 | ![](screenshots/13-portfolio-run.png) | "위험 신호 있는 거래처 전부 점검" 한 줄에 에이전트가 목록을 뽑고, 심각한 두 곳만 골라 한도 조정을 준비했다. 중간 등급은 건너뛰었다. |
 
 ## 참고할 점
 

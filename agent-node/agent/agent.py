@@ -36,7 +36,7 @@ GATEWAY = os.environ.get("FABRIC_GATEWAY_URL", "http://127.0.0.1:7777").rstrip("
 NETWORK = os.environ.get("FABRIC_NETWORK", "hackathon")
 CAPABILITY = os.environ.get("FABRIC_CAPABILITY", "")
 DEFAULT_SERVICE = os.environ.get("LEDGER_SERVICE", "ledger-read")
-MAX_STEPS = int(os.environ.get("AGENT_MAX_STEPS", "8"))
+MAX_STEPS = int(os.environ.get("AGENT_MAX_STEPS", "12"))
 # Reasoning models (Nemotron 3) think before they answer; too small a budget ends
 # the turn mid-thought with an empty answer.
 MAX_TOKENS = int(os.environ.get("AGENT_MAX_TOKENS", "4096"))
